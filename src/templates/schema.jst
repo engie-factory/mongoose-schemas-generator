@@ -1,0 +1,123 @@
+import winston from 'winston';
+import mongoose from 'mongoose';
+
+// Overwrite mongoose promise module
+mongoose.Promise = Promise;
+
+/**
+ * {{schemaName}} Schema
+ */
+const {{schemaName}}Schema = new mongoose.Schema({
+  {{#each properties}}
+  {{#if this.description}}
+  // Description: {{this.description}}
+  {{/if}}
+  {{#if this.example}}
+  // Example: {{this.example}}
+  {{/if}}
+  {{#if this.format}}
+  // Format : {{this.format}}
+  {{/if}}
+  {{@key}}: {{{json this}}},
+  {{/each}}
+}, {
+  collection: '{{collectionName}}',
+  autoIndex: true,
+  minimize: false,
+  timestamps: true
+});
+
+/**
+ * Methods
+ */
+{{schemaName}}Schema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('{{schemaName}}').find({ param: this.param }, (err, res) => {
+    if (err) {
+      reject(err);
+    }
+    resolve(res);
+  });
+});
+
+/**
+ * Statics
+ */
+{{schemaName}}Schema.statics.findByParam = param => new Promise((resolve, reject) => {
+  this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
+    if (err) {
+      reject(err);
+    }
+    resolve(res);
+  });
+});
+
+/**
+ * Query Helpers
+ */
+{{schemaName}}Schema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+
+/**
+ * Indexes
+ */
+{{schemaName}}Schema.index({ param: 1, type: -1 });
+
+/**
+ * Virtuals
+ */
+{{schemaName}}Schema.virtual('fullName')
+  .get(() => `${this.name.first} ${this.name.last}`)
+  .set((fullName) => {
+    this.name.first = fullName.substr(0, fullName.indexOf(' '));
+    this.name.last = fullName.substr(fullName.indexOf(' ') + 1);
+  });
+
+/**
+ * Pre Middleware
+ */
+{{schemaName}}Schema.pre('init', (next) => {
+  // do something before a document is returned from mongodb
+  next(); // if no errors, else call next(err)
+});
+
+{{schemaName}}Schema.pre('validate', (next) => {
+  // do something before executing registered validation rules for this document
+  next(); // if no errors, else call next(err)
+});
+
+{{schemaName}}Schema.pre('save', (next) => {
+  // do something before saving this document
+  next(); // if no errors, else call next(err)
+});
+
+{{schemaName}}Schema.pre('remove', (next) => {
+  // do something before removing this document
+  next(); // if no errors, else call next(err)
+});
+
+/**
+ * Post Middleware
+ */
+{{schemaName}}Schema.post('init', (doc) => {
+  // do something after
+  winston.log('info', 'Document with _id %s initiated', doc._id);
+});
+
+{{schemaName}}Schema.post('validate', (doc) => {
+  // do something after
+  winston.log('info', 'Document with _id %s validated', doc._id);
+});
+
+{{schemaName}}Schema.post('save', (doc) => {
+  // do something after
+  winston.log('info', 'Document with _id %s saved', doc._id);
+});
+
+{{schemaName}}Schema.post('remove', (doc) => {
+  // do something after
+  winston.log('info', 'Document with _id %s removed', doc._id);
+});
+
+/**
+ * @typedef {{schemaName}}
+ */
+export default mongoose.model('{{schemaName}}', {{schemaName}}Schema);
