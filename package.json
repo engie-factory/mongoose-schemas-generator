@@ -1,0 +1,65 @@
+{
+  "name": "engie-node-mongoose-generator",
+  "version": "0.1.2",
+  "description": "Mongoose schemas generator from a swagger design file using ES6",
+  "main": "index.js",
+  "scripts": {
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha",
+    "lint": "gulp lint",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/engie-factory/engie-node-mongoose-generator.git"
+  },
+  "keywords": [
+    "generator",
+    "mongoose",
+    "mongodb",
+    "es6",
+    "swagger"
+  ],
+  "author": "Engie Factory DevTeam",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/engie-factory/engie-node-mongoose-generator#readme",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "ghooks": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-rimraf": "^0.2.1",
+    "isparta": "^4.0.0",
+    "mocha": "^3.2.0"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run lint && npm test && npm run build"
+    }
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ],
+    "plugins": [
+      "add-module-exports"
+    ]
+  },
+  "dependencies": {
+    "handlebars": "^4.0.6",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.0",
+    "winston": "^2.3.1",
+    "word-wrap": "^1.2.1"
+  }
+}
