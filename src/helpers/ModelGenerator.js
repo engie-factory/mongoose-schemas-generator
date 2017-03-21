@@ -21,7 +21,12 @@ handleBars.registerHelper('json', (context) => {
   } else {
     _context = context;
   }
-  return JSON.stringify(_context, null, 4).replace(/"/g, '');
+  let json = JSON.stringify(_context, null, 4);
+  json = json.replace(/"([^"]+)":/g, '$1:').replace(/\uFFFF/g, '\\"');
+  json = json.replace(/type: "(Date|String|Number|Buffer|Boolean|Array|Mixed|ObjectId|Schema.Types.ObjectId)"/g, 'type: $1');
+  json = json.replace(/ref: "([^"]+)"/g, 'ref: $1');
+  json = json.replace(/"/g, '\'');
+  return json;
 });
 
 class ModelGenerator {
