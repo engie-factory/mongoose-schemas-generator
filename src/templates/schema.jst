@@ -18,7 +18,7 @@ const {{schemaName}}Schema = new mongoose.Schema({
   {{#if this.format}}
   // Format : {{this.format}}
   {{/if}}
-  {{@key}}: {{{json this}}},
+  {{@key}}: {{json this}}{{#unless @last}},{{/unless}}
   {{/each}}
 }, {
   collection: '{{collectionName}}',
