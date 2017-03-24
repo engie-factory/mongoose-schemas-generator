@@ -11,7 +11,7 @@ describe('Path Test', () => {
         const path = new Path(paths);
         const controllers = path.getControllers();
         // console.log('controllers',JSON.stringify(controllers,null,2));
-        expect(controllers).to.be.an('array');
+        expect(controllers).to.be.an('object');
         done();
       }).catch((err) => {
         done(err);
