@@ -10,9 +10,9 @@ describe('Path Test', () => {
     it('Should get controller parameters', (done) => {
       swagger.getPaths().then((paths) => {
         const path = new Path(paths);
-        const controllers = path.getControllers();
+        const _paths = path.getPaths();
         // console.log('controllers', JSON.stringify(controllers, null, 2));
-        expect(controllers).to.be.an('object');
+        expect(_paths).to.be.an('object');
         done();
       }).catch((err) => {
         done(err);
