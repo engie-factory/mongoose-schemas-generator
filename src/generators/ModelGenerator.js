@@ -1,9 +1,9 @@
 import handleBars from 'handlebars';
 import path from 'path';
 import _ from 'lodash';
-import Definition from './Definition';
-import File from './File';
-import Swagger from './Swagger';
+import Definition from '../helpers/Definition';
+import File from '../helpers/File';
+import Swagger from '../helpers/Swagger';
 
 handleBars.registerHelper('json', (context) => {
   let _context = null;
