@@ -91,7 +91,7 @@ class Path {
   }
 
 
-  getControllers() {
+  getPaths() {
     const paths = {};
     _.forEach(this.paths, (path, pathName) => {
       const _path = {};
