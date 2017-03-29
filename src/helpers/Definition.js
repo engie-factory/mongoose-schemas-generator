@@ -52,9 +52,8 @@ const TYPES = {
 class Definition {
   constructor(definitions) {
     this.definitions = definitions;
-    this.resultSchemas = {};
 
-    this.getAttr = type => Object.assign({}, DEFINITIONS[TYPES[type]], DEFINITIONS.allTypes);
+    this.getDefaultAttr = type => Object.assign({}, DEFINITIONS[type], DEFINITIONS.allTypes);
 
     this.getAllOf = (array) => {
       const property = {};
@@ -67,6 +66,28 @@ class Definition {
         }
       });
       return property;
+    };
+
+    this.getMongooseType = (property) => {
+      let type = TYPES[property.type];
+
+      if (type == null) {
+        // TODO: type error
+      }
+
+      if (type === 'String') {
+        if (property.format) {
+          const format = property.format;
+          if (format === 'date' || format === 'date-time') {
+            type = TYPES.date;
+          } else if (format === 'binary') {
+            type = TYPES.buffer;
+          } else {
+            // TODO: format error
+          }
+        }
+      }
+      return type;
     };
 
     this.getProperties = (definition) => {
@@ -99,9 +120,9 @@ class Definition {
           property.push(data);
         } else { // String, objectId, number, integer, date
           property = {};
-          property.type = TYPES[type];
+          property.type = this.getMongooseType(_definition);
           delete _definition.type;
-          Object.assign(property, this.getAttr(type));
+          Object.assign(property, this.getDefaultAttr(property.type));
           _.forEach(_definition, (value, key) => {
             const _key = camelCase(key);
             property[_key] = value;

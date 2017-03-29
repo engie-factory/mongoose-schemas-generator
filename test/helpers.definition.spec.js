@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import _ from 'lodash';
 import Swagger from '../src/helpers/Swagger';
 import Definition from '../src/helpers/Definition';
-import ModelGenerator from '../src/helpers/ModelGenerator';
+import ModelGenerator from '../src/generators/ModelGenerator';
 import File from '../src/helpers/File';
 
 
