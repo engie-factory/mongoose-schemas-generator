@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 // import * as fs from 'fs';
-import File from '../src/helpers/File';
+import File from '../src/structs/File';
 
 
 describe('File Helper', () => {

@@ -5,19 +5,15 @@ import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 
 /**
- * Activity Schema
+ * Activities Schema
  */
-const ActivitySchema = new mongoose.Schema({
-  // Description: Unique identifier for the activity
-  uuid: {
-    type: String,
-    lowercase: false,
-    uppercase: false,
-    trim: null,
-    match: null,
-    enum: null,
-    minlength: null,
-    maxlength: null,
+const ActivitiesSchema = new mongoose.Schema({
+  // Description: Position in pagination.
+  // Format : int32
+  offset: {
+    type: Number,
+    min: null,
+    max: null,
     required: false,
     default: false,
     select: false,
@@ -27,6 +23,42 @@ const ActivitySchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
+  // Description: Number of items to retrieve (100 max).
+  // Format : int32
+  limit: {
+    type: Number,
+    min: null,
+    max: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
+},
+  // Description: Total number of items available.
+  // Format : int32
+  count: {
+    type: Number,
+    min: null,
+    max: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
+},
+  history: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: Activity
+    }
+]
 }, {
   collection: 'activities',
   autoIndex: true,
@@ -37,8 +69,8 @@ const ActivitySchema = new mongoose.Schema({
 /**
  * Methods
  */
-ActivitySchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
-  this.model('Activity').find({ param: this.param }, (err, res) => {
+ActivitiesSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('Activities').find({ param: this.param }, (err, res) => {
     if (err) {
       reject(err);
     }
@@ -49,7 +81,7 @@ ActivitySchema.methods.findSimilarParam = () => new Promise((resolve, reject) =>
 /**
  * Statics
  */
-ActivitySchema.statics.findByParam = param => new Promise((resolve, reject) => {
+ActivitiesSchema.statics.findByParam = param => new Promise((resolve, reject) => {
   this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
     if (err) {
       reject(err);
@@ -61,17 +93,17 @@ ActivitySchema.statics.findByParam = param => new Promise((resolve, reject) => {
 /**
  * Query Helpers
  */
-ActivitySchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+ActivitiesSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
 
 /**
  * Indexes
  */
-ActivitySchema.index({ param: 1, type: -1 });
+ActivitiesSchema.index({ param: 1, type: -1 });
 
 /**
  * Virtuals
  */
-ActivitySchema.virtual('fullName')
+ActivitiesSchema.virtual('fullName')
   .get(() => `${this.name.first} ${this.name.last}`)
   .set((fullName) => {
     this.name.first = fullName.substr(0, fullName.indexOf(' '));
@@ -81,22 +113,22 @@ ActivitySchema.virtual('fullName')
 /**
  * Pre Middleware
  */
-ActivitySchema.pre('init', (next) => {
+ActivitiesSchema.pre('init', (next) => {
   // do something before a document is returned from mongodb
   next(); // if no errors, else call next(err)
 });
 
-ActivitySchema.pre('validate', (next) => {
+ActivitiesSchema.pre('validate', (next) => {
   // do something before executing registered validation rules for this document
   next(); // if no errors, else call next(err)
 });
 
-ActivitySchema.pre('save', (next) => {
+ActivitiesSchema.pre('save', (next) => {
   // do something before saving this document
   next(); // if no errors, else call next(err)
 });
 
-ActivitySchema.pre('remove', (next) => {
+ActivitiesSchema.pre('remove', (next) => {
   // do something before removing this document
   next(); // if no errors, else call next(err)
 });
@@ -104,27 +136,27 @@ ActivitySchema.pre('remove', (next) => {
 /**
  * Post Middleware
  */
-ActivitySchema.post('init', (doc) => {
+ActivitiesSchema.post('init', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s initiated', doc._id);
 });
 
-ActivitySchema.post('validate', (doc) => {
+ActivitiesSchema.post('validate', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s validated', doc._id);
 });
 
-ActivitySchema.post('save', (doc) => {
+ActivitiesSchema.post('save', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s saved', doc._id);
 });
 
-ActivitySchema.post('remove', (doc) => {
+ActivitiesSchema.post('remove', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s removed', doc._id);
 });
 
 /**
- * @typedef Activity
+ * @typedef Activities
  */
-export default mongoose.model('Activity', ActivitySchema);
+export default mongoose.model('Activities', ActivitiesSchema);

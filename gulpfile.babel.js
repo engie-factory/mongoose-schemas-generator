@@ -4,15 +4,13 @@ import babel from 'gulp-babel';
 import rimraf from 'gulp-rimraf';
 import nodemon from 'gulp-nodemon';
 
-const srcFiles = [
-  'src/*.js',
-  'src/helpers/*.js'
-];
-
 const allFiles = [
   '*.js',
-  ...srcFiles,
-  'test/**/*.js'
+  'src/*.js',
+  'src/helpers/*.js',
+  'src/structs/*.js',
+  'src/generators/*.js',
+  'test/*.js'
 ];
 
 gulp.task('lint', () => gulp.src(allFiles)
@@ -33,16 +31,19 @@ gulp.task('clean', () => gulp.src(['dist'], { read: false })
   })));
 
 // copy package.json to dist folder
-gulp.task('copy', ['clean'], () => gulp.src('package.json')
-  .pipe(gulp.dest('dist')));
+gulp.task('copy', ['clean'], () => {
+  gulp.src(['package.json']).pipe(gulp.dest('dist'));
+  gulp.src(['src/templates/*.jst']).pipe(gulp.dest('dist/templates'));
+});
 
 // clean and build
-gulp.task('build', ['copy'], () => gulp.src(srcFiles)
-  .pipe(
-    babel({
-      presets: ['es2015']
-    }))
-  .pipe(gulp.dest('dist')));
+gulp.task('build', ['copy'], () => {
+  const presets = { presets: ['es2015'] };
+  gulp.src(['src/*.js']).pipe(babel(presets)).pipe(gulp.dest('dist'));
+  gulp.src(['src/helpers/*.js']).pipe(babel(presets)).pipe(gulp.dest('dist/helpers'));
+  gulp.src(['src/structs/*.js']).pipe(babel(presets)).pipe(gulp.dest('dist/structs'));
+  gulp.src(['src/generators/*.js']).pipe(babel(presets)).pipe(gulp.dest('dist/generators'));
+});
 
 // watch files changes
 gulp.task('watch', () => {
@@ -55,7 +56,7 @@ gulp.task('nodemon', ['build'], () => {
     tasks: ['build'],
     script: 'dist/index.js',
     ext: 'js html json',
-    watch: [...srcFiles],
+    watch: [...allFiles],
     ignore: ['test/**/*'],
     env: {
       NODE_ENV: 'development'

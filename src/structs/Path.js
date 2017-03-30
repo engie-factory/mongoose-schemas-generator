@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import wrap from 'word-wrap';
-import { camelCase } from './stringer';
+import { camelCase } from '../helpers/stringer';
 
 class Path {
   constructor(paths) {

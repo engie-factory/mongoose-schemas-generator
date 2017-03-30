@@ -57,7 +57,7 @@ const ErrorSchema = new mongoose.Schema({
     set: null,
     unique: false,
     sparse: false
-},
+}
 }, {
   collection: 'errors',
   autoIndex: true,
