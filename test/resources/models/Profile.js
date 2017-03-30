@@ -5,11 +5,11 @@ import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 
 /**
- * PriceEstimate Schema
+ * Profile Schema
  */
-const PriceEstimateSchema = new mongoose.Schema({
-  // Description: Unique identifier representing a specific product for a given latitude &amp; longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles
-  productId: {
+const ProfileSchema = new mongoose.Schema({
+  // Description: First name of the Uber user.
+  firstName: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -27,8 +27,8 @@ const PriceEstimateSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  // Description: [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code.
-  currencyCode: {
+  // Description: Last name of the Uber user.
+  lastName: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -46,8 +46,8 @@ const PriceEstimateSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  // Description: Display name of product.
-  displayName: {
+  // Description: Email address of the Uber user
+  email: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -65,8 +65,8 @@ const PriceEstimateSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  // Description: Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or &quot;Metered&quot; for TAXI.
-  estimate: {
+  // Description: Image URL of the Uber user.
+  picture: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -84,11 +84,16 @@ const PriceEstimateSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  // Description: Lower bound of the estimated price.
-  lowEstimate: {
-    type: Number,
-    min: null,
-    max: null,
+  // Description: Promo code of the Uber user.
+  promoCode: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
     required: false,
     default: false,
     select: false,
@@ -97,37 +102,9 @@ const PriceEstimateSchema = new mongoose.Schema({
     set: null,
     unique: false,
     sparse: false
-},
-  // Description: Upper bound of the estimated price.
-  highEstimate: {
-    type: Number,
-    min: null,
-    max: null,
-    required: false,
-    default: false,
-    select: false,
-    validate: null,
-    get: null,
-    set: null,
-    unique: false,
-    sparse: false
-},
-  // Description: Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.
-  surgeMultiplier: {
-    type: Number,
-    min: null,
-    max: null,
-    required: false,
-    default: false,
-    select: false,
-    validate: null,
-    get: null,
-    set: null,
-    unique: false,
-    sparse: false
-},
+}
 }, {
-  collection: 'price_estimates',
+  collection: 'profiles',
   autoIndex: true,
   minimize: false,
   timestamps: true
@@ -136,8 +113,8 @@ const PriceEstimateSchema = new mongoose.Schema({
 /**
  * Methods
  */
-PriceEstimateSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
-  this.model('PriceEstimate').find({ param: this.param }, (err, res) => {
+ProfileSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('Profile').find({ param: this.param }, (err, res) => {
     if (err) {
       reject(err);
     }
@@ -148,7 +125,7 @@ PriceEstimateSchema.methods.findSimilarParam = () => new Promise((resolve, rejec
 /**
  * Statics
  */
-PriceEstimateSchema.statics.findByParam = param => new Promise((resolve, reject) => {
+ProfileSchema.statics.findByParam = param => new Promise((resolve, reject) => {
   this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
     if (err) {
       reject(err);
@@ -160,17 +137,17 @@ PriceEstimateSchema.statics.findByParam = param => new Promise((resolve, reject)
 /**
  * Query Helpers
  */
-PriceEstimateSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+ProfileSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
 
 /**
  * Indexes
  */
-PriceEstimateSchema.index({ param: 1, type: -1 });
+ProfileSchema.index({ param: 1, type: -1 });
 
 /**
  * Virtuals
  */
-PriceEstimateSchema.virtual('fullName')
+ProfileSchema.virtual('fullName')
   .get(() => `${this.name.first} ${this.name.last}`)
   .set((fullName) => {
     this.name.first = fullName.substr(0, fullName.indexOf(' '));
@@ -180,22 +157,22 @@ PriceEstimateSchema.virtual('fullName')
 /**
  * Pre Middleware
  */
-PriceEstimateSchema.pre('init', (next) => {
+ProfileSchema.pre('init', (next) => {
   // do something before a document is returned from mongodb
   next(); // if no errors, else call next(err)
 });
 
-PriceEstimateSchema.pre('validate', (next) => {
+ProfileSchema.pre('validate', (next) => {
   // do something before executing registered validation rules for this document
   next(); // if no errors, else call next(err)
 });
 
-PriceEstimateSchema.pre('save', (next) => {
+ProfileSchema.pre('save', (next) => {
   // do something before saving this document
   next(); // if no errors, else call next(err)
 });
 
-PriceEstimateSchema.pre('remove', (next) => {
+ProfileSchema.pre('remove', (next) => {
   // do something before removing this document
   next(); // if no errors, else call next(err)
 });
@@ -203,27 +180,27 @@ PriceEstimateSchema.pre('remove', (next) => {
 /**
  * Post Middleware
  */
-PriceEstimateSchema.post('init', (doc) => {
+ProfileSchema.post('init', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s initiated', doc._id);
 });
 
-PriceEstimateSchema.post('validate', (doc) => {
+ProfileSchema.post('validate', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s validated', doc._id);
 });
 
-PriceEstimateSchema.post('save', (doc) => {
+ProfileSchema.post('save', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s saved', doc._id);
 });
 
-PriceEstimateSchema.post('remove', (doc) => {
+ProfileSchema.post('remove', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s removed', doc._id);
 });
 
 /**
- * @typedef PriceEstimate
+ * @typedef Profile
  */
-export default mongoose.model('PriceEstimate', PriceEstimateSchema);
+export default mongoose.model('Profile', ProfileSchema);

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Swagger from '../src/helpers/Swagger';
+import Swagger from '../src/structs/Swagger';
 
 const swagger = new Swagger(`${__dirname}/resources/swagger.json`);
 

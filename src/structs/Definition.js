@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { camelCase, upperFirst, pluralize } from './stringer';
+import { camelCase, upperFirst, pluralize } from '../helpers/stringer';
 // import wrap from 'word-wrap';
 
 const DEFINITIONS = {

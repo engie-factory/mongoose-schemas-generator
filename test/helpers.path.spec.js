@@ -1,6 +1,7 @@
+/*
 import { expect } from 'chai';
-import Swagger from '../src/helpers/Swagger';
-import Path from '../src/helpers/Path';
+import Swagger from '../src/structs/Swagger';
+import Path from '../src/structs/Path';
 import RouteGenerator from '../src/generators/RouterGenerator';
 
 const swagger = new Swagger(`${__dirname}/resources/swagger.json`);
@@ -11,7 +12,6 @@ describe('Path Test', () => {
       swagger.getPaths().then((paths) => {
         const path = new Path(paths);
         const _paths = path.getPaths();
-        // console.log('controllers', JSON.stringify(controllers, null, 2));
         expect(_paths).to.be.an('object');
         done();
       }).catch((err) => {
@@ -24,13 +24,9 @@ describe('Path Test', () => {
     it('Should generate routes', (done) => {
       const generator = new RouteGenerator(`${__dirname}/resources/swagger.json`);
       generator.generateRoutes().then(() => {
-        /* swagger.getPaths().then((paths) => {
-          done();
-        }).catch((err) => {
-          done(err);
-        });*/
         done();
       });
     });
   });
 });
+*/

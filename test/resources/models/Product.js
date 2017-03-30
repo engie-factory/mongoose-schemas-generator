@@ -102,7 +102,7 @@ const ProductSchema = new mongoose.Schema({
     set: null,
     unique: false,
     sparse: false
-},
+}
 }, {
   collection: 'products',
   autoIndex: true,
