@@ -90,7 +90,6 @@ class Path {
     };
   }
 
-
   getPaths() {
     const paths = {};
     _.forEach(this.paths, (path, pathName) => {

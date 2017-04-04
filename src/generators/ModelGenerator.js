@@ -17,7 +17,7 @@ class ModelGenerator {
       swagger.getDefinitions()
         .then((definitions) => {
           if (!definitions) {
-            throw new Error('No definitions found');
+            reject(new Error('No definitions found'));
           } else {
             const defs = new Definition(definitions);
             const schemas = defs.getSchemas();
