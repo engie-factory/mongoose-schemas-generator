@@ -91,11 +91,29 @@ class Path {
   }
 
   getPaths() {
-    const paths = {};
-    _.forEach(this.paths, (path, pathName) => {
+    // const paths = {};
+    const routes = [];
+    _.forEach(this.paths, (methods, path) => {
+      const route = {
+        path,
+        methods: []
+      };
+      _.forEach(methods, (method, verb) => {
+        route.methods.push({
+          verb,
+          summary: method.summary,
+          description: method.description,
+          parameters: method.parameters
+          // tags: method.tags
+          // responses: method.responses
+        });
+      });
+      routes.push(route);
+      // console.log(route);
+      /*
       const _path = {};
       const _pathName = pathName.replace('}', '').replace('{', ':');
-
+      console.log(pathName);
       const endpointName = pathName.split('/')[1];
       _path.endpointName = endpointName;
       _path.pathName = _pathName;
@@ -108,9 +126,9 @@ class Path {
         }
         paths[tag].push(_path);
       });
+      */
     });
-
-    return paths;
+    return routes;
   }
 }
 export default Path;

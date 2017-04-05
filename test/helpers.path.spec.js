@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import path from 'path';
 import Swagger from '../src/structs/Swagger';
 import Path from '../src/structs/Path';
-import RouteGenerator from '../src/generators/RouterGenerator';
+// import RouteGenerator from '../src/generators/RouterGenerator';
 // import File from '../src/structs/File';
 
 const swagger = new Swagger(path.resolve(__dirname, './resources/swagger.json'));
@@ -15,7 +15,8 @@ describe('Paths Test', () => {
         swagger.getPaths().then((paths) => {
           const pats = new Path(paths);
           const routes = pats.getPaths();
-          expect(routes).to.be.an('object');
+          // console.log(routes);
+          expect(routes).to.be.an('array');
           done();
         }).catch((err) => {
           done(err);
@@ -26,6 +27,7 @@ describe('Paths Test', () => {
     });
   });
 
+  /*
   describe('Generate routes', () => {
     it('Should generate routes', (done) => {
       try {
@@ -38,4 +40,5 @@ describe('Paths Test', () => {
       }
     });
   });
+  */
 });
