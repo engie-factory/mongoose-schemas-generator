@@ -1,0 +1,12 @@
+import {{controllerName}} from '../models/{{controllerName}};'
+
+{{#each controller as |controller controllerName|}}
+{{#each method}}
+{{#if this.operationId}}
+function {{this.operationId}}
+{{/if}}
+
+{{/each}}
+{{/each}}
+
+export default { };

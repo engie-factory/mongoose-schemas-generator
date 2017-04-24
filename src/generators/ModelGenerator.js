@@ -11,7 +11,7 @@ class ModelGenerator {
   }
 
   generateSchemas(folderPath) {
-    $.mkdir('-p', folderPath);
+    $.mkdir('-p', `${folderPath}/models`);
     return new Promise((resolve, reject) => {
       const swagger = new Swagger(this.swaggerPath);
       swagger.getDefinitions()
@@ -22,7 +22,7 @@ class ModelGenerator {
             const defs = new Definition(definitions);
             const schemas = defs.getSchemas();
             _.forEach(schemas, (schema) => {
-              const pathFile = `${folderPath}/${schema.name}.js`;
+              const pathFile = `${folderPath}/models/${schema.name}.js`;
               const templateFile = 'schema';
               const content = {
                 schemaName: schema.name,
@@ -43,3 +43,4 @@ class ModelGenerator {
 }
 
 export default ModelGenerator;
+

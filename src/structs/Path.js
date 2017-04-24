@@ -110,7 +110,6 @@ class Path {
         paths[tag].push(_path);
       });
     });
-
     return paths;
   }
 }

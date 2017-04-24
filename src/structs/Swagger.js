@@ -29,3 +29,4 @@ class Swagger extends File {
 }
 
 export default Swagger;
+

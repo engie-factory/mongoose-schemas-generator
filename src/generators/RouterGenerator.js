@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import $ from 'shelljs';
 import Swagger from '../structs/Swagger';
 import Path from '../structs/Path';
 import generateFile from './DefaultGenerator';
@@ -9,6 +10,8 @@ class RouterGenerator {
   }
 
   generateRoutes(folderPath) {
+    $.mkdir('-p', `${folderPath}/routes`);
+    $.mkdir('-p', `${folderPath}/controllers`);
     return new Promise((resolve, reject) => {
       const swagger = new Swagger(this.swaggerPath);
       swagger.getPaths().then((paths) => {
@@ -17,12 +20,25 @@ class RouterGenerator {
         } else {
           const path = new Path(paths);
           const _paths = path.getPaths();
+          let pathFile = `${folderPath}/routes/index.js`;
+          let templateFile = 'indexRoute';
+          let content = {
+            paths: _paths
+          };
+          generateFile(content, pathFile, templateFile);
           _.forEach(_paths, (controller, controllerName) => {
-            const pathFile = `${folderPath}/${controllerName}.route.js`;
-            const templateFile = 'route';
-            const content = {
+            pathFile = `${folderPath}/routes/${controllerName.toLowerCase()}.js`;
+            templateFile = 'route';
+            content = {
               routeName: controllerName,
               routes: controller
+            };
+            generateFile(content, pathFile, templateFile);
+            pathFile = `${folderPath}/controllers/${controllerName.toLowerCase()}.js`;
+            templateFile = 'controller';
+            content = {
+              controllerName,
+              controller,
             };
             generateFile(content, pathFile, templateFile);
           });

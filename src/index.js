@@ -1,6 +1,7 @@
 import path from 'path';
 import winston from 'winston';
 import ModelGenerator from './generators/ModelGenerator';
+import RouterGenerator from './generators/RouterGenerator';
 
 const parseArg = (arg) => {
   const _arg = {};
@@ -33,13 +34,21 @@ parseArgs(process.argv.slice(2))
     if (args.in && args.out) {
       const inFile = path.resolve(__dirname, '.', args.in);
       const outFolder = path.resolve(__dirname, '.', args.out);
-      const generator = new ModelGenerator(inFile);
-      generator.generateSchemas(outFolder).then((res) => {
+      const modelGenerator = new ModelGenerator(inFile);
+      const routerGenerator = new RouterGenerator(inFile);
+      modelGenerator.generateSchemas(outFolder).then((res) => {
         if (res) {
           winston.log('info', 'Models are being created');
         }
       }).catch((err) => {
         winston.log('error', 'Error creating models', err);
+      });
+      routerGenerator.generateRoutes(outFolder).then((res) => {
+        if (res) {
+          winston.log('info', 'Paths are being created');
+        }
+      }).catch((err) => {
+        winston.log('error', 'Error creating path', err);
       });
     } else {
       throw new Error('No minimal arguments passed');

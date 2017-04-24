@@ -1,0 +1,11 @@
+import express from 'express';
+{{#each paths}}import {{@key}} from './{{@key}}.route';
+{{/each}}
+
+const router = express.Router(); // eslint-disable-line new-cap
+
+{{#each paths}}// mount {{@key}} routes at /{{@key}}
+router.use('/{{@key}}', {{@key}});
+
+{{/each}}
+export default router;
