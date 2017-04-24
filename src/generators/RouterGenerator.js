@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import $ from 'shelljs';
-import Swagger from '../structs/Swagger';
+// import winston from 'winston';
 import Path from '../structs/Path';
+import Swagger from '../structs/Swagger';
 import generateFile from './DefaultGenerator';
 
 class RouterGenerator {

@@ -1,3 +1,4 @@
+import YAML from 'yamljs';
 import File from './File';
 
 class Swagger extends File {
@@ -6,13 +7,17 @@ class Swagger extends File {
 
     this.getDocProperty = property => new Promise((resolve, reject) => {
       try {
-        this.read()
-          .then((content) => {
+        this.read().then((content) => {
+          if (this.path.indexOf('.yaml') > -1) {
+            resolve(YAML.parse(content)[property]);
+          } else if (this.path.indexOf('.json') > -1) {
             resolve(JSON.parse(content)[property]);
-          })
-          .catch((err) => {
-            reject(err);
-          });
+          } else {
+            throw new Error('Unsupported file extention');
+          }
+        }).catch((err) => {
+          reject(err);
+        });
       } catch (e) {
         reject(e);
       }
