@@ -88,13 +88,19 @@ class Path {
       });
       return methods;
     };
+
+    this.editPathName = (pathName) => {
+      const splitPath = pathName.split('/');
+      const cleanPath = splitPath.map(pathPart => camelCase(pathPart));
+      return cleanPath.join('/');
+    };
   }
 
   getPaths() {
     const paths = {};
     _.forEach(this.paths, (path, pathName) => {
       const _path = {};
-      const _pathName = pathName.replace('}', '').replace('{', ':');
+      const _pathName = this.editPathName(pathName.replace('}', '').replace('{', ':'));
       const endpointName = pathName.split('/')[1];
       _path.endpointName = endpointName;
       _path.pathName = _pathName;
