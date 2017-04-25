@@ -12,7 +12,6 @@ class RouterGenerator {
 
   generateRoutes(folderPath) {
     $.mkdir('-p', `${folderPath}/routes`);
-    $.mkdir('-p', `${folderPath}/controllers`);
     return new Promise((resolve, reject) => {
       const swagger = new Swagger(this.swaggerPath);
       swagger.getPaths().then((paths) => {
@@ -28,18 +27,12 @@ class RouterGenerator {
           };
           generateFile(content, pathFile, templateFile);
           _.forEach(_paths, (controller, controllerName) => {
-            pathFile = `${folderPath}/routes/${controllerName.toLowerCase()}.js`;
+            pathFile = `${folderPath}/routes/${controllerName}.js`;
             templateFile = 'route';
             content = {
               routeName: controllerName,
               routes: controller
-            };
-            generateFile(content, pathFile, templateFile);
-            pathFile = `${folderPath}/controllers/${controllerName.toLowerCase()}.js`;
-            templateFile = 'controller';
-            content = {
-              controllerName,
-              controller,
+
             };
             generateFile(content, pathFile, templateFile);
           });
