@@ -6,15 +6,15 @@ import locationCtrl from '../controllers/location';
 const router = express.Router(); // eslint-disable-line new-cap
 
 
-router.route('/locations/:location-id')
+router.route('/locations/locationId')
   /* Get information about a location. */
-  /** get /api/location/locations/:location-id */
+  /** get /api/location/locations/locationId */
   .get(locationCtrl.getLocationsByLocationId)
 
 
-router.route('/locations/:location-id/media/recent')
+router.route('/locations/locationId/media/recent')
   /* Get a list of recent media objects from a given location. */
-  /** get /api/location/locations/:location-id/media/recent */
+  /** get /api/location/locations/locationId/media/recent */
   .get(locationCtrl.getLocationsByLocationIdMediaRecent)
 
 

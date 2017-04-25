@@ -6,15 +6,15 @@ import mediaCtrl from '../controllers/media';
 const router = express.Router(); // eslint-disable-line new-cap
 
 
-router.route('/media/:media-id')
+router.route('/media/mediaId')
   /* Get information about a media object.,The returned type key will allow you to differentiate ,between &#x60;image&#x60;,and &#x60;video&#x60; media.,,Note: if you authenticate with an OAuth Token, you will ,receive the,&#x60;user_has_liked&#x60; key which quickly tells you whether the ,current user,has liked this media item. */
-  /** get /api/media/media/:media-id */
+  /** get /api/media/media/mediaId */
   .get(mediaCtrl.getMediaByMediaId)
 
 
-router.route('/media1/:shortcode')
+router.route('/media1/shortcode')
   /* This endpoint returns the same response as **GET** ,&#x60;/media/media-id&#x60;.,,A media object&#x27;s shortcode can be found in its shortlink ,URL.,An example shortlink is &#x60;http://instagram.com/p/D/&#x60;,Its corresponding shortcode is D. */
-  /** get /api/media/media1/:shortcode */
+  /** get /api/media/media1/shortcode */
   .get(mediaCtrl.getMedia1ByShortcode)
 
 
@@ -30,37 +30,37 @@ router.route('/media/popular')
   .get(mediaCtrl.getMediaPopular)
 
 
-router.route('/media/:media-id/comments')
+router.route('/media/mediaId/comments')
   /* Get a list of recent comments on a media object. */
-  /** get /api/media/media/:media-id/comments */
+  /** get /api/media/media/mediaId/comments */
   .get(mediaCtrl.getMediaByMediaIdComments)
 
   /* Create a comment on a media object with the following rules:,,* The total length of the comment cannot exceed 300 ,characters.,* The comment cannot contain more than 4 hashtags.,* The comment cannot contain more than 1 URL.,* The comment cannot consist of all capital letters. */
-  /** post /api/media/media/:media-id/comments */
+  /** post /api/media/media/mediaId/comments */
   .post(mediaCtrl.postMediaByMediaIdComments)
 
   /* Remove a comment either on the authenticated user&#x27;s media ,object or,authored by the authenticated user. */
-  /** delete /api/media/media/:media-id/comments */
+  /** delete /api/media/media/mediaId/comments */
   .delete(mediaCtrl.deleteMediaByMediaIdComments)
 
 
-router.route('/media/:media-id/likes')
+router.route('/media/mediaId/likes')
   /* Get a list of users who have liked this media. */
-  /** get /api/media/media/:media-id/likes */
+  /** get /api/media/media/mediaId/likes */
   .get(mediaCtrl.getMediaByMediaIdLikes)
 
   /* Set a like on this media by the currently authenticated ,user. */
-  /** post /api/media/media/:media-id/likes */
+  /** post /api/media/media/mediaId/likes */
   .post(mediaCtrl.postMediaByMediaIdLikes)
 
   /* Remove a like on this media by the currently authenticated ,user. */
-  /** delete /api/media/media/:media-id/likes */
+  /** delete /api/media/media/mediaId/likes */
   .delete(mediaCtrl.deleteMediaByMediaIdLikes)
 
 
-router.route('/locations/:location-id/media/recent')
+router.route('/locations/locationId/media/recent')
   /* Get a list of recent media objects from a given location. */
-  /** get /api/media/locations/:location-id/media/recent */
+  /** get /api/media/locations/locationId/media/recent */
   .get(mediaCtrl.getLocationsByLocationIdMediaRecent)
 
 

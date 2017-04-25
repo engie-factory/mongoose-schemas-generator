@@ -6,9 +6,9 @@ import usersCtrl from '../controllers/users';
 const router = express.Router(); // eslint-disable-line new-cap
 
 
-router.route('/users/:user-id')
+router.route('/users/userId')
   /* Get basic information about a user. */
-  /** get /api/users/users/:user-id */
+  /** get /api/users/users/userId */
   .get(usersCtrl.getUsersByUserId)
 
 
@@ -18,8 +18,8 @@ router.route('/users/self/feed')
   .get(usersCtrl.getUsersSelfFeed)
 
 
-router.route('/users/:user-id/media/recent')
-  /** get /api/users/users/:user-id/media/recent */
+router.route('/users/userId/media/recent')
+  /** get /api/users/users/userId/media/recent */
   .get(usersCtrl.getUsersByUserIdMediaRecent)
 
 
