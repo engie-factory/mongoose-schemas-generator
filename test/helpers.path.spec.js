@@ -16,7 +16,7 @@ describe('Paths Test', () => {
           const pats = new Path(paths);
           const routes = pats.getPaths();
           // console.log(routes);
-          expect(routes).to.be.an('array');
+          expect(routes).to.be.an('object');
           done();
         }).catch((err) => {
           done(err);

@@ -91,26 +91,26 @@ class Path {
   }
 
   getPaths() {
-    // const paths = {};
-    const routes = [];
-    _.forEach(this.paths, (methods, path) => {
-      const route = {
-        path,
-        methods: []
-      };
-      _.forEach(methods, (method, verb) => {
-        route.methods.push({
-          verb,
-          summary: method.summary,
-          description: method.description,
-          parameters: method.parameters
-          // tags: method.tags
-          // responses: method.responses
-        });
+    const paths = {};
+    _.forEach(this.paths, (path, pathName) => {
+      const _path = {};
+      const _pathName = pathName.replace('}', '').replace('{', ':');
+
+      const endpointName = pathName.split('/')[1];
+      _path.endpointName = endpointName;
+      _path.pathName = _pathName;
+      _path.methods = this.getMethods(path, pathName);
+
+      const tags = _.uniq(_.flatten(_.map(_path.methods, 'tags')));
+      _.forEach(tags, (tag) => {
+        if (!paths[tag]) {
+          paths[tag] = [];
+        }
+        paths[tag].push(_path);
       });
-      routes.push(route);
     });
-    return routes;
+
+    return paths;
   }
 }
 export default Path;
