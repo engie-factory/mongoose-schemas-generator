@@ -6,6 +6,8 @@ export const camelCase = str => _.camelCase(str);
 
 export const snakeCase = str => _.snakeCase(str);
 
+export const lowCase = str => _.toLower(str);
+
 export const upperFirst = str => _.upperFirst(str);
 
 export const pluralize = (str, options) => {

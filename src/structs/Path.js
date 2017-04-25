@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import wrap from 'word-wrap';
-import { camelCase } from '../helpers/stringer';
+import { camelCase, lowCase } from '../helpers/stringer';
 
 class Path {
   constructor(paths) {
@@ -95,7 +95,6 @@ class Path {
     _.forEach(this.paths, (path, pathName) => {
       const _path = {};
       const _pathName = pathName.replace('}', '').replace('{', ':');
-
       const endpointName = pathName.split('/')[1];
       _path.endpointName = endpointName;
       _path.pathName = _pathName;
@@ -103,10 +102,11 @@ class Path {
 
       const tags = _.uniq(_.flatten(_.map(_path.methods, 'tags')));
       _.forEach(tags, (tag) => {
-        if (!paths[tag]) {
-          paths[tag] = [];
+        const _tag = lowCase(tag);
+        if (!paths[_tag]) {
+          paths[_tag] = [];
         }
-        paths[tag].push(_path);
+        paths[_tag].push(_path);
       });
     });
 

@@ -1,5 +1,5 @@
 import express from 'express';
-{{#each paths}}import {{@key}} from './{{@key}}.route';
+{{#each paths}}import {{@key}} from './{{@key}}';
 {{/each}}
 
 const router = express.Router(); // eslint-disable-line new-cap
