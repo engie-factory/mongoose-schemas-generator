@@ -1,4 +1,4 @@
-import Users from '../models/Users;'
+import users from '../models/users;'
 
 
 export default { };

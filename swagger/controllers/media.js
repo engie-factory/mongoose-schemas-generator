@@ -1,4 +1,4 @@
-import Media from '../models/Media;'
+import media from '../models/media;'
 
 
 export default { };

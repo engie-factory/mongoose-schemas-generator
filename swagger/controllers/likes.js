@@ -1,4 +1,4 @@
-import Likes from '../models/Likes;'
+import likes from '../models/likes;'
 
 
 export default { };

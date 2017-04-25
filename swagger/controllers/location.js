@@ -1,4 +1,4 @@
-import Location from '../models/Location;'
+import location from '../models/location;'
 
 
 export default { };

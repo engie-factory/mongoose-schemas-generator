@@ -1,4 +1,4 @@
-import Comments from '../models/Comments;'
+import comments from '../models/comments;'
 
 
 export default { };

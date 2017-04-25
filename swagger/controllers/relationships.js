@@ -1,4 +1,4 @@
-import Relationships from '../models/Relationships;'
+import relationships from '../models/relationships;'
 
 
 export default { };

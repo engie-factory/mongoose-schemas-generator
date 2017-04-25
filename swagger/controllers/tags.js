@@ -1,4 +1,4 @@
-import Tags from '../models/Tags;'
+import tags from '../models/tags;'
 
 
 export default { };
