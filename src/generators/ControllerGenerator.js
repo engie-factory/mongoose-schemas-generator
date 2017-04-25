@@ -29,6 +29,7 @@ class ControllerGenerator {
               controllerName,
               controller,
             };
+            console.dir(content);
             generateFile(content, pathFile, templateFile);
           });
           resolve(true);

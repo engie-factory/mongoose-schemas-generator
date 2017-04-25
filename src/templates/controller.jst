@@ -3,10 +3,68 @@ import {{controllerName}} from '../models/{{controllerName}};'
 {{#each controller as |controller controllerName|}}
 {{#each method}}
 {{#if this.operationId}}
-function {{this.operationId}}
+export const {{this.operationId}} = (req, res, next) => {
+  try {
+    // insert code here
+  } catch(e) {
+    next(e);
+  }
+}
 {{/if}}
-
 {{/each}}
 {{/each}}
 
-export default { };
+export const create = (req, res, next) => {
+  const {{controllerName}} = new {{controllerName}}(req.body);
+  {{controllerName}}.save()
+    .then({{controllerName}} => res.json({{controllerName}}))
+    .catch(e => next(e));
+}
+
+export const read = (req, res, next) => {
+  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
+    .then({{controllerName}} => res.json({{controllerName}}))
+    .catch(e => next(e));
+}
+
+export const update = (req, res, next) => {
+  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
+    .then({{controllerName}} => {
+      for (key in req.body) {
+        {{controllerName}}[key] = req.body[key];
+      }
+      {{controllerName}}.save();
+      res.json({{controllerName}});
+    })
+    .catch(e => next(e));
+}
+
+export const list = (req, res, next) => {
+  const query = { $and: [] };
+  for (key in req.query) {
+    if (key !== 'skip' && key !== 'limit') {
+      const param = {};
+      param[key] = req.query.key;
+      query.$and.push(param);
+    }
+  }
+  {{controllerName}}.find(query)
+    .skip(parseInt(req.query.skip || 0, 10))
+    .limit(parseInt(req.query.limit || 50, 10))
+    .then({{controllerName}} => res.json({{controllerName}}))
+    .catch(e => next(e));
+}
+
+export const delete = (req, res, next) => {
+  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
+    .then({{controllerName}} => {
+      const {{controllerName}}Obj = {{controllerName}}.toObject();
+      {{controllerName}}.remove();
+      res.json({
+        message: '{{controllerName}} successfully deleted' ,
+        id: req.params.{{controllerName}}Id,
+        object: {{controllerName}}Obj
+      });
+    })
+    .catch(e => next(e));
+}
