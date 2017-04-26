@@ -1,4 +1,4 @@
-import Location from '../models/Location';
+import Medium from '../models/Medium';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Location from '../models/Location';
  */
 
 export const create = (req, res, next) => {
-  const location = new Location(req.body);
-  location.save()
-    .then(_location => res.json(_location.toObject()))
+  const medium = new Medium(req.body);
+  medium.save()
+    .then(_medium => res.json(_medium.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => res.json(_location.toObject()))
+  Medium.findOne({ _id: req.params.mediumId })
+    .then(_medium => res.json(_medium.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => {
+  Medium.findOne({ _id: req.params.mediumId })
+    .then(_medium => {
       for (key in req.body) {
-        _location[key] = req.body[key];
+        _medium[key] = req.body[key];
       }
-      _location.save();
-      res.json(_location.toObject());
+      _medium.save();
+      res.json(_medium.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Location.find(query)
+  Medium.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(locations => res.json(locations.toObject()))
+    .then(medias => res.json(medias.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(location => {
-      const _location = location.toObject();
-      location.remove();
+  Medium.findOne({ _id: req.params.mediumId })
+    .then(medium => {
+      const _medium = medium.toObject();
+      medium.remove();
       res.json({
-        message: 'location successfully deleted',
-        id: req.params.locationId,
-        object: _location
+        message: 'medium successfully deleted',
+        id: req.params.mediumId,
+        object: _medium
       });
     })
     .catch(e => next(e));

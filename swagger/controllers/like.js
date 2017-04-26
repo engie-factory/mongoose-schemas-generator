@@ -1,4 +1,4 @@
-import Location from '../models/Location';
+import Like from '../models/Like';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Location from '../models/Location';
  */
 
 export const create = (req, res, next) => {
-  const location = new Location(req.body);
-  location.save()
-    .then(_location => res.json(_location.toObject()))
+  const like = new Like(req.body);
+  like.save()
+    .then(_like => res.json(_like.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => res.json(_location.toObject()))
+  Like.findOne({ _id: req.params.likeId })
+    .then(_like => res.json(_like.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => {
+  Like.findOne({ _id: req.params.likeId })
+    .then(_like => {
       for (key in req.body) {
-        _location[key] = req.body[key];
+        _like[key] = req.body[key];
       }
-      _location.save();
-      res.json(_location.toObject());
+      _like.save();
+      res.json(_like.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Location.find(query)
+  Like.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(locations => res.json(locations.toObject()))
+    .then(likes => res.json(likes.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(location => {
-      const _location = location.toObject();
-      location.remove();
+  Like.findOne({ _id: req.params.likeId })
+    .then(like => {
+      const _like = like.toObject();
+      like.remove();
       res.json({
-        message: 'location successfully deleted',
-        id: req.params.locationId,
-        object: _location
+        message: 'like successfully deleted',
+        id: req.params.likeId,
+        object: _like
       });
     })
     .catch(e => next(e));

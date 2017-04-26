@@ -1,4 +1,4 @@
-import Location from '../models/Location';
+import User from '../models/User';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Location from '../models/Location';
  */
 
 export const create = (req, res, next) => {
-  const location = new Location(req.body);
-  location.save()
-    .then(_location => res.json(_location.toObject()))
+  const user = new User(req.body);
+  user.save()
+    .then(_user => res.json(_user.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => res.json(_location.toObject()))
+  User.findOne({ _id: req.params.userId })
+    .then(_user => res.json(_user.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => {
+  User.findOne({ _id: req.params.userId })
+    .then(_user => {
       for (key in req.body) {
-        _location[key] = req.body[key];
+        _user[key] = req.body[key];
       }
-      _location.save();
-      res.json(_location.toObject());
+      _user.save();
+      res.json(_user.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Location.find(query)
+  User.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(locations => res.json(locations.toObject()))
+    .then(users => res.json(users.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(location => {
-      const _location = location.toObject();
-      location.remove();
+  User.findOne({ _id: req.params.userId })
+    .then(user => {
+      const _user = user.toObject();
+      user.remove();
       res.json({
-        message: 'location successfully deleted',
-        id: req.params.locationId,
-        object: _location
+        message: 'user successfully deleted',
+        id: req.params.userId,
+        object: _user
       });
     })
     .catch(e => next(e));

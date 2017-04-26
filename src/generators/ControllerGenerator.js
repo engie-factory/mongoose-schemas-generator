@@ -2,6 +2,7 @@ import _ from 'lodash';
 import $ from 'shelljs';
 import Path from '../structs/Path';
 import Swagger from '../structs/Swagger';
+import { pluralize } from '../helpers/stringer';
 import generateFile from './DefaultGenerator';
 
 class ControllerGenerator {
@@ -24,12 +25,17 @@ class ControllerGenerator {
             paths: _paths
           };
           _.forEach(_paths, (controller, controllerName) => {
-            const pathFile = `${folderPath}/controllers/${controllerName.toLowerCase()}.js`;
+            const pathFile = `${folderPath}/controllers/${pluralize(controllerName, { revert: true })}.js`;
             content = {
-              controllerName,
+              endpointName: controllerName,
+              routerName: pluralize(controllerName, { revert: true }),
+              structName: pluralize(controllerName, { revert: true, camelcase: true }),
+              listName: pluralize(controllerName, { camelcase: true }),
+              controllerName: pluralize(controllerName, { revert: true }),
+              modelName: pluralize(controllerName, { revert: true, upperfirst: true }),
+              pathName: pluralize(controllerName, { camelcase: true }),
               controller,
             };
-            console.dir(content);
             generateFile(content, pathFile, templateFile);
           });
           resolve(true);

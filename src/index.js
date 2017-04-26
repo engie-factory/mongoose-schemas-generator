@@ -8,7 +8,6 @@ import { parseArgs } from './helpers/argsParser';
 
 parseArgs(process.argv.slice(2))
   .then((args) => {
-    console.log(args);
     if (args.in && args.out) {
       const inFile = path.resolve(__dirname, '.', args.in);
       const outFolder = path.resolve(__dirname, '.', args.out);

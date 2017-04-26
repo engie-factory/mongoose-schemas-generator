@@ -1,5 +1,8 @@
-import {{controllerName}} from '../models/{{controllerName}};'
+import {{modelName}} from '../models/{{modelName}}';
 
+/**
+ * BEGIN - Special methods
+ */
 {{#each controller as |controller controllerName|}}
 {{#each method}}
 {{#if this.operationId}}
@@ -13,28 +16,31 @@ export const {{this.operationId}} = (req, res, next) => {
 {{/if}}
 {{/each}}
 {{/each}}
+/**
+ * END - Special methods
+ */
 
 export const create = (req, res, next) => {
-  const {{controllerName}} = new {{controllerName}}(req.body);
-  {{controllerName}}.save()
-    .then({{controllerName}} => res.json({{controllerName}}))
+  const {{structName}} = new {{modelName}}(req.body);
+  {{structName}}.save()
+    .then(_{{structName}} => res.json(_{{structName}}.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
-    .then({{controllerName}} => res.json({{controllerName}}))
+  {{modelName}}.findOne({ _id: req.params.{{structName}}Id })
+    .then(_{{structName}} => res.json(_{{structName}}.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
-    .then({{controllerName}} => {
+  {{modelName}}.findOne({ _id: req.params.{{structName}}Id })
+    .then(_{{structName}} => {
       for (key in req.body) {
-        {{controllerName}}[key] = req.body[key];
+        _{{structName}}[key] = req.body[key];
       }
-      {{controllerName}}.save();
-      res.json({{controllerName}});
+      _{{structName}}.save();
+      res.json(_{{structName}}.toObject());
     })
     .catch(e => next(e));
 }
@@ -48,22 +54,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  {{controllerName}}.find(query)
+  {{modelName}}.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then({{controllerName}} => res.json({{controllerName}}))
+    .then({{listName}} => res.json({{listName}}.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  {{controllerName}}.findOne({ _id: req.params.{{controllerName}}Id })
-    .then({{controllerName}} => {
-      const {{controllerName}}Obj = {{controllerName}}.toObject();
-      {{controllerName}}.remove();
+  {{modelName}}.findOne({ _id: req.params.{{structName}}Id })
+    .then({{structName}} => {
+      const _{{structName}} = {{structName}}.toObject();
+      {{structName}}.remove();
       res.json({
-        message: '{{controllerName}} successfully deleted' ,
-        id: req.params.{{controllerName}}Id,
-        object: {{controllerName}}Obj
+        message: '{{controllerName}} successfully deleted',
+        id: req.params.{{structName}}Id,
+        object: _{{structName}}
       });
     })
     .catch(e => next(e));

@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import wrap from 'word-wrap';
-import { camelCase, lowCase } from '../helpers/stringer';
+import {
+  camelCase,
+  toLower,
+  pluralize
+} from '../helpers/stringer';
 
 class Path {
   constructor(paths) {
@@ -103,12 +107,17 @@ class Path {
       const _pathName = this.editPathName(pathName.replace('}', '').replace('{', ':'));
       const endpointName = pathName.split('/')[1];
       _path.endpointName = endpointName;
+      _path.routerName = pluralize(endpointName, { revert: true });
+      _path.structName = pluralize(endpointName, { revert: true, camelcase: true });
+      _path.listName = pluralize(endpointName, { camelcase: true });
+      _path.controllerName = pluralize(endpointName, { revert: true });
+      _path.modelName = pluralize(endpointName, { revert: true, upperfirst: true });
       _path.pathName = _pathName;
       _path.methods = this.getMethods(path, pathName);
 
       const tags = _.uniq(_.flatten(_.map(_path.methods, 'tags')));
       _.forEach(tags, (tag) => {
-        const _tag = lowCase(tag);
+        const _tag = toLower(tag);
         if (!paths[_tag]) {
           paths[_tag] = [];
         }

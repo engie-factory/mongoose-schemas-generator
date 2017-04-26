@@ -6,21 +6,29 @@ export const camelCase = str => _.camelCase(str);
 
 export const snakeCase = str => _.snakeCase(str);
 
-export const lowCase = str => _.toLower(str);
+export const toLower = str => _.toLower(str);
 
 export const upperFirst = str => _.upperFirst(str);
 
-export const pluralize = (str, options) => {
+export const pluralize = (str, options = {}) => {
   const applyOptions = (pre, opts) => {
     let res = pre;
-    if (opts.startcase) {
-      res = startCase(res);
-    }
-    if (opts.camelcase) {
-      res = camelCase(res);
-    }
-    if (opts.snakecase) {
-      res = snakeCase(res);
+    if (opts) {
+      if (opts.startcase) {
+        res = startCase(res);
+      }
+      if (opts.camelcase) {
+        res = camelCase(res);
+      }
+      if (opts.snakecase) {
+        res = snakeCase(res);
+      }
+      if (opts.tolower) {
+        res = toLower(res);
+      }
+      if (opts.upperfirst) {
+        res = upperFirst(res);
+      }
     }
     return res;
   };

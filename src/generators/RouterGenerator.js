@@ -32,7 +32,6 @@ class RouterGenerator {
             content = {
               routeName: controllerName,
               routes: controller
-
             };
             generateFile(content, pathFile, templateFile);
           });

@@ -1,4 +1,4 @@
-import Location from '../models/Location';
+import Comment from '../models/Comment';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Location from '../models/Location';
  */
 
 export const create = (req, res, next) => {
-  const location = new Location(req.body);
-  location.save()
-    .then(_location => res.json(_location.toObject()))
+  const comment = new Comment(req.body);
+  comment.save()
+    .then(_comment => res.json(_comment.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => res.json(_location.toObject()))
+  Comment.findOne({ _id: req.params.commentId })
+    .then(_comment => res.json(_comment.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => {
+  Comment.findOne({ _id: req.params.commentId })
+    .then(_comment => {
       for (key in req.body) {
-        _location[key] = req.body[key];
+        _comment[key] = req.body[key];
       }
-      _location.save();
-      res.json(_location.toObject());
+      _comment.save();
+      res.json(_comment.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Location.find(query)
+  Comment.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(locations => res.json(locations.toObject()))
+    .then(comments => res.json(comments.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(location => {
-      const _location = location.toObject();
-      location.remove();
+  Comment.findOne({ _id: req.params.commentId })
+    .then(comment => {
+      const _comment = comment.toObject();
+      comment.remove();
       res.json({
-        message: 'location successfully deleted',
-        id: req.params.locationId,
-        object: _location
+        message: 'comment successfully deleted',
+        id: req.params.commentId,
+        object: _comment
       });
     })
     .catch(e => next(e));
