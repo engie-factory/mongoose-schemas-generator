@@ -1,23 +1,17 @@
 import express from 'express';
-import validate from 'express-validation';
-import paramValidation from '../../config/param-validation';
-import commentsCtrl from '../controllers/comments';
+import commentCtrl from '../controllers/comment';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-
-router.route('/media/mediaId/comments')
+router.route('/media/:mediaId/comments')
   /* Get a list of recent comments on a media object. */
-  /** get /api/comments/media/mediaId/comments */
-  .get(commentsCtrl.getMediaByMediaIdComments)
-
+  /** get /api/comment/media/:mediaId/comments */
+  .get(commentCtrl.getMediaByMediaIdComments)
   /* Create a comment on a media object with the following rules:,,* The total length of the comment cannot exceed 300 ,characters.,* The comment cannot contain more than 4 hashtags.,* The comment cannot contain more than 1 URL.,* The comment cannot consist of all capital letters. */
-  /** post /api/comments/media/mediaId/comments */
-  .post(commentsCtrl.postMediaByMediaIdComments)
-
-  /* Remove a comment either on the authenticated user&#x27;s media ,object or,authored by the authenticated user. */
-  /** delete /api/comments/media/mediaId/comments */
-  .delete(commentsCtrl.deleteMediaByMediaIdComments)
-
+  /** post /api/comment/media/:mediaId/comments */
+  .post(commentCtrl.postMediaByMediaIdComments)
+  /* Remove a comment either on the authenticated user's media ,object or,authored by the authenticated user. */
+  /** delete /api/comment/media/:mediaId/comments */
+  .delete(commentCtrl.deleteMediaByMediaIdComments);
 
 export default router;

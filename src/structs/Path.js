@@ -95,7 +95,13 @@ class Path {
 
     this.editPathName = (pathName) => {
       const splitPath = pathName.split('/');
-      const cleanPath = splitPath.map(pathPart => camelCase(pathPart));
+      const cleanPath = splitPath.map((pathPart) => {
+        if (pathPart.indexOf('-') !== -1) {
+          const _pathPart = camelCase(pathPart);
+          return `:${_pathPart}`;
+        }
+        return pathPart;
+      });
       return cleanPath.join('/');
     };
   }
@@ -114,7 +120,6 @@ class Path {
       _path.modelName = pluralize(endpointName, { revert: true, upperfirst: true });
       _path.pathName = _pathName;
       _path.methods = this.getMethods(path, pathName);
-
       const tags = _.uniq(_.flatten(_.map(_path.methods, 'tags')));
       _.forEach(tags, (tag) => {
         const _tag = toLower(tag);

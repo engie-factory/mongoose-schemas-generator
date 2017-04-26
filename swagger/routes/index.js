@@ -1,37 +1,29 @@
 import express from 'express';
-import users from './users';
-import relationships from './relationships';
-import media from './media';
-import comments from './comments';
-import likes from './likes';
-import tags from './tags';
+import user from './user';
+import medium from './medium';
+import media1 from './media1';
 import location from './location';
-import geographies from './geographies';
+import tag from './tag';
+import geography from './geography';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-// mount users routes at /users
-router.use('/users', users);
+// mount user routes at /users
+router.use('/users', user);
 
-// mount relationships routes at /relationships
-router.use('/relationships', relationships);
+// mount medium routes at /media
+router.use('/media', medium);
 
-// mount media routes at /media
-router.use('/media', media);
+// mount media1 routes at /media1
+router.use('/media1', media1);
 
-// mount comments routes at /comments
-router.use('/comments', comments);
+// mount location routes at /locations
+router.use('/locations', location);
 
-// mount likes routes at /likes
-router.use('/likes', likes);
+// mount tag routes at /tags
+router.use('/tags', tag);
 
-// mount tags routes at /tags
-router.use('/tags', tags);
-
-// mount location routes at /location
-router.use('/location', location);
-
-// mount geographies routes at /geographies
-router.use('/geographies', geographies);
+// mount geography routes at /geographies
+router.use('/geographies', geography);
 
 export default router;

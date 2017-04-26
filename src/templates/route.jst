@@ -1,20 +1,16 @@
 import express from 'express';
-import validate from 'express-validation';
-import paramValidation from '../../config/param-validation';
 import {{routeName}}Ctrl from '../controllers/{{routeName}}';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
 {{#each routes}}
-
 router.route('{{pathName}}')
   {{#each methods}}
   {{#if this.description}}
-  /* {{this.description}} */
+  /* {{{this.description}}} */
   {{/if}}
   /** {{this.methodName}} /api/{{../../routeName}}{{../pathName}} */
-  .{{methodName}}({{../../routeName}}Ctrl.{{operationId}})
-
+  .{{methodName}}({{../../routeName}}Ctrl.{{operationId}}){{#if @last}};{{/if}}
 {{/each}}
 {{/each}}
 
