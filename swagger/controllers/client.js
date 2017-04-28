@@ -1,4 +1,4 @@
-import Location from '../models/Location';
+import Client from '../models/Client';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Location from '../models/Location';
  */
 
 export const create = (req, res, next) => {
-  const location = new Location(req.body);
-  location.save()
-    .then(_location => res.json(_location.toObject()))
+  const client = new Client(req.body);
+  client.save()
+    .then(_client => res.json(_client.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => res.json(_location.toObject()))
+  Client.findOne({ _id: req.params.clientId })
+    .then(_client => res.json(_client.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(_location => {
+  Client.findOne({ _id: req.params.clientId })
+    .then(_client => {
       for (key in req.body) {
-        _location[key] = req.body[key];
+        _client[key] = req.body[key];
       }
-      _location.save();
-      res.json(_location.toObject());
+      _client.save();
+      res.json(_client.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Location.find(query)
+  Client.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(locations => res.json(locations.toObject()))
+    .then(clients => res.json(clients.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Location.findOne({ _id: req.params.locationId })
-    .then(location => {
-      const _location = location.toObject();
-      location.remove();
+  Client.findOne({ _id: req.params.clientId })
+    .then(client => {
+      const _client = client.toObject();
+      client.remove();
       res.json({
-        message: 'location successfully deleted',
-        id: req.params.locationId,
-        object: _location
+        message: 'client successfully deleted',
+        id: req.params.clientId,
+        object: _client
       });
     })
     .catch(e => next(e));

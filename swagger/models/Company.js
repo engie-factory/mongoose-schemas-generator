@@ -5,27 +5,9 @@ import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 
 /**
- * Location Schema
+ * Company Schema
  */
-const LocationSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    lowercase: false,
-    uppercase: false,
-    trim: null,
-    match: null,
-    enum: null,
-    minlength: null,
-    maxlength: null,
-    required: false,
-    default: false,
-    select: false,
-    validate: null,
-    get: null,
-    set: null,
-    unique: false,
-    sparse: false
-},
+const CompanySchema = new mongoose.Schema({
   name: {
     type: String,
     lowercase: false,
@@ -44,23 +26,15 @@ const LocationSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  latitude: {
-    type: Number,
-    min: null,
-    max: null,
-    required: false,
-    default: false,
-    select: false,
-    validate: null,
-    get: null,
-    set: null,
-    unique: false,
-    sparse: false
-},
-  longitude: {
-    type: Number,
-    min: null,
-    max: null,
+  rut: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
     required: false,
     default: false,
     select: false,
@@ -71,7 +45,7 @@ const LocationSchema = new mongoose.Schema({
     sparse: false
 }
 }, {
-  collection: 'locations',
+  collection: 'companies',
   autoIndex: true,
   minimize: false,
   timestamps: true
@@ -83,8 +57,8 @@ const LocationSchema = new mongoose.Schema({
 /**
 *Uncomment if needed
 
-LocationSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
-  this.model('Location').find({ param: this.param }, (err, res) => {
+CompanySchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('Company').find({ param: this.param }, (err, res) => {
     if (err) {
       reject(err);
     }
@@ -99,7 +73,7 @@ LocationSchema.methods.findSimilarParam = () => new Promise((resolve, reject) =>
 /**
 *Uncomment if needed
 
-LocationSchema.statics.findByParam = param => new Promise((resolve, reject) => {
+CompanySchema.statics.findByParam = param => new Promise((resolve, reject) => {
   this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
     if (err) {
       reject(err);
@@ -115,7 +89,7 @@ LocationSchema.statics.findByParam = param => new Promise((resolve, reject) => {
 /**
 *Uncomment if needed
 
-LocationSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+CompanySchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
 */
 
 /**
@@ -124,7 +98,7 @@ LocationSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig
  /**
 *Uncomment if needed
 
-LocationSchema.index({ param: 1, type: -1 });
+CompanySchema.index({ param: 1, type: -1 });
 */
 
 /**
@@ -132,7 +106,7 @@ LocationSchema.index({ param: 1, type: -1 });
  *//**
 *Uncomment if needed
 
-LocationSchema.virtual('fullName')
+CompanySchema.virtual('fullName')
   .get(() => `${this.name.first} ${this.name.last}`)
   .set((fullName) => {
     this.name.first = fullName.substr(0, fullName.indexOf(' '));
@@ -145,22 +119,22 @@ LocationSchema.virtual('fullName')
  *//**
 *Uncomment if needed
 
-LocationSchema.pre('init', (next) => {
+CompanySchema.pre('init', (next) => {
   // do something before a document is returned from mongodb
   next(); // if no errors, else call next(err)
 });
 
-LocationSchema.pre('validate', (next) => {
+CompanySchema.pre('validate', (next) => {
   // do something before executing registered validation rules for this document
   next(); // if no errors, else call next(err)
 });
 
-LocationSchema.pre('save', (next) => {
+CompanySchema.pre('save', (next) => {
   // do something before saving this document
   next(); // if no errors, else call next(err)
 });
 
-LocationSchema.pre('remove', (next) => {
+CompanySchema.pre('remove', (next) => {
   // do something before removing this document
   next(); // if no errors, else call next(err)
 });
@@ -172,28 +146,28 @@ LocationSchema.pre('remove', (next) => {
  /**
 *Uncomment if needed
 
-LocationSchema.post('init', (doc) => {
+CompanySchema.post('init', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s initiated', doc._id);
 });
 
-LocationSchema.post('validate', (doc) => {
+CompanySchema.post('validate', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s validated', doc._id);
 });
 
-LocationSchema.post('save', (doc) => {
+CompanySchema.post('save', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s saved', doc._id);
 });
 
-LocationSchema.post('remove', (doc) => {
+CompanySchema.post('remove', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s removed', doc._id);
 });
 */
 
 /**
- * @typedef Location
+ * @typedef Company
  */
-export default mongoose.model('Location', LocationSchema);
+export default mongoose.model('Company', CompanySchema);

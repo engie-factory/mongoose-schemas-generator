@@ -1,4 +1,4 @@
-import Comment from '../models/Comment';
+import Company from '../models/Company';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Comment from '../models/Comment';
  */
 
 export const create = (req, res, next) => {
-  const comment = new Comment(req.body);
-  comment.save()
-    .then(_comment => res.json(_comment.toObject()))
+  const company = new Company(req.body);
+  company.save()
+    .then(_company => res.json(_company.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Comment.findOne({ _id: req.params.commentId })
-    .then(_comment => res.json(_comment.toObject()))
+  Company.findOne({ _id: req.params.companyId })
+    .then(_company => res.json(_company.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Comment.findOne({ _id: req.params.commentId })
-    .then(_comment => {
+  Company.findOne({ _id: req.params.companyId })
+    .then(_company => {
       for (key in req.body) {
-        _comment[key] = req.body[key];
+        _company[key] = req.body[key];
       }
-      _comment.save();
-      res.json(_comment.toObject());
+      _company.save();
+      res.json(_company.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Comment.find(query)
+  Company.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(comments => res.json(comments.toObject()))
+    .then(companies => res.json(companies.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Comment.findOne({ _id: req.params.commentId })
-    .then(comment => {
-      const _comment = comment.toObject();
-      comment.remove();
+  Company.findOne({ _id: req.params.companyId })
+    .then(company => {
+      const _company = company.toObject();
+      company.remove();
       res.json({
-        message: 'comment successfully deleted',
-        id: req.params.commentId,
-        object: _comment
+        message: 'company successfully deleted',
+        id: req.params.companyId,
+        object: _company
       });
     })
     .catch(e => next(e));

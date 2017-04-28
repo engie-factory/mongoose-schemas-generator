@@ -9,7 +9,7 @@ router.route('{{pathName}}')
   {{#if this.description}}
   /* {{{this.description}}} */
   {{/if}}
-  /** {{this.methodName}} /api/{{../../routeName}}{{../pathName}} */
+  /** {{this.methodName}} /api/{{../this.endpointName}}{{../pathName}} */
   .{{methodName}}({{../../routeName}}Ctrl.{{operationId}}){{#if @last}};{{/if}}
 {{/each}}
 {{/each}}

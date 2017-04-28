@@ -8,19 +8,6 @@ mongoose.Promise = Promise;
  * User Schema
  */
 const UserSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    min: null,
-    max: null,
-    required: false,
-    default: false,
-    select: false,
-    validate: null,
-    get: null,
-    set: null,
-    unique: false,
-    sparse: false
-},
   username: {
     type: String,
     lowercase: false,
@@ -39,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  fullName: {
+  email: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -57,7 +44,7 @@ const UserSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  profilePicture: {
+  password: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -75,7 +62,7 @@ const UserSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  bio: {
+  firstname: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -93,7 +80,7 @@ const UserSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  website: {
+  lastname: {
     type: String,
     lowercase: false,
     uppercase: false,
@@ -111,46 +98,26 @@ const UserSchema = new mongoose.Schema({
     unique: false,
     sparse: false
 },
-  counts: {
-    media: {
-        type: Number,
-        min: null,
-        max: null,
-        required: false,
-        default: false,
-        select: false,
-        validate: null,
-        get: null,
-        set: null,
-        unique: false,
-        sparse: false
-    },
-    follows: {
-        type: Number,
-        min: null,
-        max: null,
-        required: false,
-        default: false,
-        select: false,
-        validate: null,
-        get: null,
-        set: null,
-        unique: false,
-        sparse: false
-    },
-    follwedBy: {
-        type: Number,
-        min: null,
-        max: null,
-        required: false,
-        default: false,
-        select: false,
-        validate: null,
-        get: null,
-        set: null,
-        unique: false,
-        sparse: false
-    }
+  role: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: [
+        'member',
+        'admin'
+    ],
+    minlength: null,
+    maxlength: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
 }
 }, {
   collection: 'users',

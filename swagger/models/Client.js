@@ -5,13 +5,18 @@ import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 
 /**
- * Tag Schema
+ * Client Schema
  */
-const TagSchema = new mongoose.Schema({
-  mediaCount: {
-    type: Number,
-    min: null,
-    max: null,
+const ClientSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
     required: false,
     default: false,
     select: false,
@@ -38,9 +43,27 @@ const TagSchema = new mongoose.Schema({
     set: null,
     unique: false,
     sparse: false
+},
+  secret: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
 }
 }, {
-  collection: 'tags',
+  collection: 'clients',
   autoIndex: true,
   minimize: false,
   timestamps: true
@@ -52,8 +75,8 @@ const TagSchema = new mongoose.Schema({
 /**
 *Uncomment if needed
 
-TagSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
-  this.model('Tag').find({ param: this.param }, (err, res) => {
+ClientSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('Client').find({ param: this.param }, (err, res) => {
     if (err) {
       reject(err);
     }
@@ -68,7 +91,7 @@ TagSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
 /**
 *Uncomment if needed
 
-TagSchema.statics.findByParam = param => new Promise((resolve, reject) => {
+ClientSchema.statics.findByParam = param => new Promise((resolve, reject) => {
   this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
     if (err) {
       reject(err);
@@ -84,7 +107,7 @@ TagSchema.statics.findByParam = param => new Promise((resolve, reject) => {
 /**
 *Uncomment if needed
 
-TagSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+ClientSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
 */
 
 /**
@@ -93,7 +116,7 @@ TagSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') })
  /**
 *Uncomment if needed
 
-TagSchema.index({ param: 1, type: -1 });
+ClientSchema.index({ param: 1, type: -1 });
 */
 
 /**
@@ -101,7 +124,7 @@ TagSchema.index({ param: 1, type: -1 });
  *//**
 *Uncomment if needed
 
-TagSchema.virtual('fullName')
+ClientSchema.virtual('fullName')
   .get(() => `${this.name.first} ${this.name.last}`)
   .set((fullName) => {
     this.name.first = fullName.substr(0, fullName.indexOf(' '));
@@ -114,22 +137,22 @@ TagSchema.virtual('fullName')
  *//**
 *Uncomment if needed
 
-TagSchema.pre('init', (next) => {
+ClientSchema.pre('init', (next) => {
   // do something before a document is returned from mongodb
   next(); // if no errors, else call next(err)
 });
 
-TagSchema.pre('validate', (next) => {
+ClientSchema.pre('validate', (next) => {
   // do something before executing registered validation rules for this document
   next(); // if no errors, else call next(err)
 });
 
-TagSchema.pre('save', (next) => {
+ClientSchema.pre('save', (next) => {
   // do something before saving this document
   next(); // if no errors, else call next(err)
 });
 
-TagSchema.pre('remove', (next) => {
+ClientSchema.pre('remove', (next) => {
   // do something before removing this document
   next(); // if no errors, else call next(err)
 });
@@ -141,28 +164,28 @@ TagSchema.pre('remove', (next) => {
  /**
 *Uncomment if needed
 
-TagSchema.post('init', (doc) => {
+ClientSchema.post('init', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s initiated', doc._id);
 });
 
-TagSchema.post('validate', (doc) => {
+ClientSchema.post('validate', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s validated', doc._id);
 });
 
-TagSchema.post('save', (doc) => {
+ClientSchema.post('save', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s saved', doc._id);
 });
 
-TagSchema.post('remove', (doc) => {
+ClientSchema.post('remove', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s removed', doc._id);
 });
 */
 
 /**
- * @typedef Tag
+ * @typedef Client
  */
-export default mongoose.model('Tag', TagSchema);
+export default mongoose.model('Client', ClientSchema);

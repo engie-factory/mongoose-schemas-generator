@@ -3,6 +3,7 @@ import winston from 'winston';
 import ModelGenerator from './generators/ModelGenerator';
 import RouterGenerator from './generators/RouterGenerator';
 import ControllerGenerator from './generators/ControllerGenerator';
+import TestGenerator from './generators/TestGenerator';
 import { parseArgs } from './helpers/argsParser';
 
 
@@ -14,6 +15,7 @@ parseArgs(process.argv.slice(2))
       const modelGenerator = new ModelGenerator(inFile);
       const routerGenerator = new RouterGenerator(inFile);
       const controllerGenerator = new ControllerGenerator(inFile);
+      const testsGenerator = new TestGenerator(inFile);
       const none = !args.models && !args.all && !args.routes && !args.controllers;
       const all = (args.models && args.controllers && args.routes) || args.all;
       if (args.models || all || none) {
@@ -41,6 +43,15 @@ parseArgs(process.argv.slice(2))
           }
         }).catch((err) => {
           winston.log('error', 'Error creating controllers', err);
+        });
+      }
+      if (args.controllers || all || none) {
+        testsGenerator.generateTests(outFolder).then((res) => {
+          if (res) {
+            winston.log('info', 'Tests are being created');
+          }
+        }).catch((err) => {
+          winston.log('error', 'Error creating Tests', err);
         });
       }
     } else {

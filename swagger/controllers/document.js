@@ -1,4 +1,4 @@
-import Medium from '../models/Medium';
+import Document from '../models/Document';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Medium from '../models/Medium';
  */
 
 export const create = (req, res, next) => {
-  const medium = new Medium(req.body);
-  medium.save()
-    .then(_medium => res.json(_medium.toObject()))
+  const document = new Document(req.body);
+  document.save()
+    .then(_document => res.json(_document.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Medium.findOne({ _id: req.params.mediumId })
-    .then(_medium => res.json(_medium.toObject()))
+  Document.findOne({ _id: req.params.documentId })
+    .then(_document => res.json(_document.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Medium.findOne({ _id: req.params.mediumId })
-    .then(_medium => {
+  Document.findOne({ _id: req.params.documentId })
+    .then(_document => {
       for (key in req.body) {
-        _medium[key] = req.body[key];
+        _document[key] = req.body[key];
       }
-      _medium.save();
-      res.json(_medium.toObject());
+      _document.save();
+      res.json(_document.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Medium.find(query)
+  Document.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(medias => res.json(medias.toObject()))
+    .then(documents => res.json(documents.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Medium.findOne({ _id: req.params.mediumId })
-    .then(medium => {
-      const _medium = medium.toObject();
-      medium.remove();
+  Document.findOne({ _id: req.params.documentId })
+    .then(document => {
+      const _document = document.toObject();
+      document.remove();
       res.json({
-        message: 'medium successfully deleted',
-        id: req.params.mediumId,
-        object: _medium
+        message: 'document successfully deleted',
+        id: req.params.documentId,
+        object: _document
       });
     })
     .catch(e => next(e));

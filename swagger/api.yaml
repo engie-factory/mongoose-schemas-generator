@@ -1,0 +1,398 @@
+swagger: "2.0"
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: "1.0.0"
+  title: Agrobolt REST API
+# during dev, should point to your local machine
+host: api.agrobolt.com
+# basePath prefixes all resource paths
+basePath: /v1
+#
+schemes:
+  # tip: remove http to make production-grade
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+
+################################################################################
+#                                           Paths                              #
+################################################################################
+paths:
+  /users/me:
+    get:
+      summary: returns authenticated user
+      description: returns authenticated user
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+
+  /users/register:
+    post:
+      summary: register an user
+      description: register an unexistent user
+      parameters:
+        - in: body
+          name: body
+          description: User to register info
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+            
+  /clients/register:
+    post:
+      summary: register a client
+      description: register an unexistent client
+      parameters:
+        - in: body
+          name: body
+          description: Client to register info
+          required: true
+          schema:
+            $ref: "#/definitions/Client"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Client'
+      
+  /companies:
+    get:
+      summary: returns a list of companies
+      description: returns a list of companies
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Company'
+    post:
+      summary: create a company
+      description: create a company
+      parameters:
+        - in: body
+          name: body
+          description: Company to create info
+          required: false
+          schema:
+            $ref: "#/definitions/Company"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+    
+  /companies/{company_id}:
+    get:
+      summary: returns a specific company
+      description: returns a specific company
+      parameters:
+        - in: path
+          name: company_id
+          description: ID of company that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Company'
+    put:
+      summary: update a company
+      description: update a company
+      parameters:
+        - in: path
+          name: company_id
+          description: ID of company that needs to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Company to update info
+          required: false
+          schema:
+            $ref: "#/definitions/Company"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+    delete:
+      summary: deletes a specific company
+      description: deletes a specific company
+      parameters:
+        - in: path
+          name: company_id
+          description: ID of company that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Company'
+    
+  /projects:
+    get:
+      summary: returns a list of projects
+      description: returns a list of projects
+      parameters:
+        - in: query
+          name: companyId
+          description: ID of owner company
+          required: false
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+    post:
+      summary: create a project
+      description: create a project
+      parameters:
+        - in: body
+          name: body
+          description: Project to create info
+          required: false
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Project'
+    
+  /projects/{project_id}:
+    get:
+      summary: returns a specific projects
+      description: returns a specific projects
+      parameters:
+        - in: path
+          name: project_id
+          description: ID of project that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Project'
+    put:
+      summary: update a project
+      description: update a project
+      parameters:
+        - in: path
+          name: project_id
+          description: ID of project that needs to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Project to update info
+          required: false
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Project'
+    delete:
+      summary: deletes a specific project
+      description: deletes a specific project
+      parameters:
+        - in: path
+          name: project_id
+          description: ID of company that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Project'
+  
+  /documents:
+    get:
+      summary: returns a list of documents
+      description: returns a list of documents
+      parameters:
+        - in: query
+          name: companyId
+          description: ID of owner company
+          required: false
+          type: string
+        - in: query
+          name: projectId
+          description: ID of owner project
+          required: false
+          type: string
+        - in: query
+          name: type
+          description: type of document
+          required: false
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Document'
+    post:
+      summary: create a document
+      description: create a document
+      parameters:
+        - in: body
+          name: body
+          description: Document to create info
+          required: false
+          schema:
+            $ref: "#/definitions/Document"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Document'
+    
+  /documents/{document_id}:
+    get:
+      summary: returns a specific documents
+      description: returns a specific documents
+      parameters:
+        - in: path
+          name: document_id
+          description: ID of document that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Document'
+    put:
+      summary: update a document
+      description: update a document
+      parameters:
+        - in: path
+          name: document_id
+          description: ID of document that needs to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Document to update info
+          required: false
+          schema:
+            $ref: "#/definitions/Document"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Document'
+    delete:
+      summary: deletes a specific document
+      description: deletes a specific document
+      parameters:
+        - in: path
+          name: document_id
+          description: ID of document that needs to be updated
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Document'
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+
+  Client:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      secret:
+        type: string
+  
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      role:
+        type: string
+        enum: [ 'member', 'admin']
+        
+  Company:
+    type: object
+    properties:
+      name:
+        type: string
+      rut:
+        type: string
+
+  Project:
+    type: object
+    properties:
+      name:
+        type: string
+      company_id:
+        $ref: '#/definitions/Company'
+  
+  Document:
+    type: object
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+      type:
+        type: string
+        enum: [ 'legal', 'technical']
+      company_id:
+        $ref: '#/definitions/Company'
+      project_id:
+        $ref: '#/definitions/Project'

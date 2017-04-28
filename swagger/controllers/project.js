@@ -1,4 +1,4 @@
-import Tag from '../models/Tag';
+import Project from '../models/Project';
 
 /**
  * BEGIN - Special methods
@@ -8,26 +8,26 @@ import Tag from '../models/Tag';
  */
 
 export const create = (req, res, next) => {
-  const tag = new Tag(req.body);
-  tag.save()
-    .then(_tag => res.json(_tag.toObject()))
+  const project = new Project(req.body);
+  project.save()
+    .then(_project => res.json(_project.toObject()))
     .catch(e => next(e));
 }
 
 export const read = (req, res, next) => {
-  Tag.findOne({ _id: req.params.tagId })
-    .then(_tag => res.json(_tag.toObject()))
+  Project.findOne({ _id: req.params.projectId })
+    .then(_project => res.json(_project.toObject()))
     .catch(e => next(e));
 }
 
 export const update = (req, res, next) => {
-  Tag.findOne({ _id: req.params.tagId })
-    .then(_tag => {
+  Project.findOne({ _id: req.params.projectId })
+    .then(_project => {
       for (key in req.body) {
-        _tag[key] = req.body[key];
+        _project[key] = req.body[key];
       }
-      _tag.save();
-      res.json(_tag.toObject());
+      _project.save();
+      res.json(_project.toObject());
     })
     .catch(e => next(e));
 }
@@ -41,22 +41,22 @@ export const list = (req, res, next) => {
       query.$and.push(param);
     }
   }
-  Tag.find(query)
+  Project.find(query)
     .skip(parseInt(req.query.skip || 0, 10))
     .limit(parseInt(req.query.limit || 50, 10))
-    .then(tags => res.json(tags.toObject()))
+    .then(projects => res.json(projects.toObject()))
     .catch(e => next(e));
 }
 
 export const delete = (req, res, next) => {
-  Tag.findOne({ _id: req.params.tagId })
-    .then(tag => {
-      const _tag = tag.toObject();
-      tag.remove();
+  Project.findOne({ _id: req.params.projectId })
+    .then(project => {
+      const _project = project.toObject();
+      project.remove();
       res.json({
-        message: 'tag successfully deleted',
-        id: req.params.tagId,
-        object: _tag
+        message: 'project successfully deleted',
+        id: req.params.projectId,
+        object: _project
       });
     })
     .catch(e => next(e));

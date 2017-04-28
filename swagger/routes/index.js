@@ -1,29 +1,25 @@
 import express from 'express';
 import user from './user';
-import medium from './medium';
-import media1 from './media1';
-import location from './location';
-import tag from './tag';
-import geography from './geography';
+import client from './client';
+import company from './company';
+import project from './project';
+import document from './document';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
 // mount user routes at /users
 router.use('/users', user);
 
-// mount medium routes at /media
-router.use('/media', medium);
+// mount client routes at /clients
+router.use('/clients', client);
 
-// mount media1 routes at /media1
-router.use('/media1', media1);
+// mount company routes at /companies
+router.use('/companies', company);
 
-// mount location routes at /locations
-router.use('/locations', location);
+// mount project routes at /projects
+router.use('/projects', project);
 
-// mount tag routes at /tags
-router.use('/tags', tag);
-
-// mount geography routes at /geographies
-router.use('/geographies', geography);
+// mount document routes at /documents
+router.use('/documents', document);
 
 export default router;
