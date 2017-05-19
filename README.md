@@ -7,6 +7,7 @@ Mongoose schemas generator from a swagger design file using ES6.
 
 ```bash
 :~$ npm install
+:~$ --in=/path/to/swagger/file.{yaml|json} out=/path/to/destination/folder node dist/index.js
 ```
 
 ### Test ###

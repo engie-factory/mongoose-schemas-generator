@@ -1,46 +1,59 @@
 import path from 'path';
 import winston from 'winston';
 import ModelGenerator from './generators/ModelGenerator';
+import RouterGenerator from './generators/RouterGenerator';
+import ControllerGenerator from './generators/ControllerGenerator';
+import TestGenerator from './generators/TestGenerator';
+import { parseArgs } from './helpers/argsParser';
 
-const parseArg = (arg) => {
-  const _arg = {};
-  if (arg.indexOf('=') > -1) {
-    const splitArg = arg.split('=');
-    _arg[splitArg[0]] = splitArg[1];
-  } else {
-    _arg[arg] = true;
-  }
-  return _arg;
-};
-
-const parseArgs = args => new Promise((resolve, reject) => {
-  try {
-    let _args = {};
-    args.forEach((val, index, array) => {
-      const _arg = parseArg(val);
-      _args = Object.assign(_args, _arg);
-      if (index === array.length - 1) {
-        resolve(_args);
-      }
-    });
-  } catch (e) {
-    reject(e);
-  }
-});
 
 parseArgs(process.argv.slice(2))
   .then((args) => {
     if (args.in && args.out) {
       const inFile = path.resolve(__dirname, '.', args.in);
       const outFolder = path.resolve(__dirname, '.', args.out);
-      const generator = new ModelGenerator(inFile);
-      generator.generateSchemas(outFolder).then((res) => {
-        if (res) {
-          winston.log('info', 'Models are being created');
-        }
-      }).catch((err) => {
-        winston.log('error', 'Error creating models', err);
-      });
+      const modelGenerator = new ModelGenerator(inFile);
+      const routerGenerator = new RouterGenerator(inFile);
+      const controllerGenerator = new ControllerGenerator(inFile);
+      const testsGenerator = new TestGenerator(inFile);
+      const none = !args.models && !args.all && !args.routes && !args.controllers;
+      const all = (args.models && args.controllers && args.routes) || args.all;
+      if (args.models || all || none) {
+        modelGenerator.generateSchemas(outFolder).then((res) => {
+          if (res) {
+            winston.log('info', 'Models are being created');
+          }
+        }).catch((err) => {
+          winston.log('error', 'Error creating models', err);
+        });
+      }
+      if (args.routes || all || none) {
+        routerGenerator.generateRoutes(outFolder).then((res) => {
+          if (res) {
+            winston.log('info', 'Routes are being created');
+          }
+        }).catch((err) => {
+          winston.log('error', 'Error creating routes', err);
+        });
+      }
+      if (args.controllers || all || none) {
+        controllerGenerator.generateControllers(outFolder).then((res) => {
+          if (res) {
+            winston.log('info', 'Controllers are being created');
+          }
+        }).catch((err) => {
+          winston.log('error', 'Error creating controllers', err);
+        });
+      }
+      if (args.controllers || all || none) {
+        testsGenerator.generateTests(outFolder).then((res) => {
+          if (res) {
+            winston.log('info', 'Tests are being created');
+          }
+        }).catch((err) => {
+          winston.log('error', 'Error creating Tests', err);
+        });
+      }
     } else {
       throw new Error('No minimal arguments passed');
     }

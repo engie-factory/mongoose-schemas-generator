@@ -5,23 +5,65 @@ import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 
 /**
- * {{schemaName}} Schema
+ * Client Schema
  */
-const {{schemaName}}Schema = new mongoose.Schema({
-  {{#each properties}}
-  {{#if this.description}}
-  // Description: {{this.description}}
-  {{/if}}
-  {{#if this.example}}
-  // Example: {{this.example}}
-  {{/if}}
-  {{#if this.format}}
-  // Format : {{this.format}}
-  {{/if}}
-  {{@key}}: {{{json this}}}{{#unless @last}},{{/unless}}
-  {{/each}}
+const ClientSchema = new mongoose.Schema({
+  id: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
+},
+  name: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
+},
+  secret: {
+    type: String,
+    lowercase: false,
+    uppercase: false,
+    trim: null,
+    match: null,
+    enum: null,
+    minlength: null,
+    maxlength: null,
+    required: false,
+    default: false,
+    select: false,
+    validate: null,
+    get: null,
+    set: null,
+    unique: false,
+    sparse: false
+}
 }, {
-  collection: '{{collectionName}}',
+  collection: 'clients',
   autoIndex: true,
   minimize: false,
   timestamps: true
@@ -33,8 +75,8 @@ const {{schemaName}}Schema = new mongoose.Schema({
 /**
 *Uncomment if needed
 
-{{schemaName}}Schema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
-  this.model('{{schemaName}}').find({ param: this.param }, (err, res) => {
+ClientSchema.methods.findSimilarParam = () => new Promise((resolve, reject) => {
+  this.model('Client').find({ param: this.param }, (err, res) => {
     if (err) {
       reject(err);
     }
@@ -49,7 +91,7 @@ const {{schemaName}}Schema = new mongoose.Schema({
 /**
 *Uncomment if needed
 
-{{schemaName}}Schema.statics.findByParam = param => new Promise((resolve, reject) => {
+ClientSchema.statics.findByParam = param => new Promise((resolve, reject) => {
   this.find({ param: new RegExp(param, 'ig') }, (err, res) => {
     if (err) {
       reject(err);
@@ -65,7 +107,7 @@ const {{schemaName}}Schema = new mongoose.Schema({
 /**
 *Uncomment if needed
 
-{{schemaName}}Schema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
+ClientSchema.query.byParam = param => this.find({ param: new RegExp(param, 'ig') });
 */
 
 /**
@@ -74,7 +116,7 @@ const {{schemaName}}Schema = new mongoose.Schema({
  /**
 *Uncomment if needed
 
-{{schemaName}}Schema.index({ param: 1, type: -1 });
+ClientSchema.index({ param: 1, type: -1 });
 */
 
 /**
@@ -82,7 +124,7 @@ const {{schemaName}}Schema = new mongoose.Schema({
  *//**
 *Uncomment if needed
 
-{{schemaName}}Schema.virtual('fullName')
+ClientSchema.virtual('fullName')
   .get(() => `${this.name.first} ${this.name.last}`)
   .set((fullName) => {
     this.name.first = fullName.substr(0, fullName.indexOf(' '));
@@ -95,22 +137,22 @@ const {{schemaName}}Schema = new mongoose.Schema({
  *//**
 *Uncomment if needed
 
-{{schemaName}}Schema.pre('init', (next) => {
+ClientSchema.pre('init', (next) => {
   // do something before a document is returned from mongodb
   next(); // if no errors, else call next(err)
 });
 
-{{schemaName}}Schema.pre('validate', (next) => {
+ClientSchema.pre('validate', (next) => {
   // do something before executing registered validation rules for this document
   next(); // if no errors, else call next(err)
 });
 
-{{schemaName}}Schema.pre('save', (next) => {
+ClientSchema.pre('save', (next) => {
   // do something before saving this document
   next(); // if no errors, else call next(err)
 });
 
-{{schemaName}}Schema.pre('remove', (next) => {
+ClientSchema.pre('remove', (next) => {
   // do something before removing this document
   next(); // if no errors, else call next(err)
 });
@@ -122,28 +164,28 @@ const {{schemaName}}Schema = new mongoose.Schema({
  /**
 *Uncomment if needed
 
-{{schemaName}}Schema.post('init', (doc) => {
+ClientSchema.post('init', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s initiated', doc._id);
 });
 
-{{schemaName}}Schema.post('validate', (doc) => {
+ClientSchema.post('validate', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s validated', doc._id);
 });
 
-{{schemaName}}Schema.post('save', (doc) => {
+ClientSchema.post('save', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s saved', doc._id);
 });
 
-{{schemaName}}Schema.post('remove', (doc) => {
+ClientSchema.post('remove', (doc) => {
   // do something after
   winston.log('info', 'Document with _id %s removed', doc._id);
 });
 */
 
 /**
- * @typedef {{schemaName}}
+ * @typedef Client
  */
-export default mongoose.model('{{schemaName}}', {{schemaName}}Schema);
+export default mongoose.model('Client', ClientSchema);

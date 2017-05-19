@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import wrap from 'word-wrap';
-import { camelCase } from '../helpers/stringer';
+import {
+  camelCase,
+  toLower,
+  pluralize
+} from '../helpers/stringer';
 
 class Path {
   constructor(paths) {
@@ -69,13 +73,15 @@ class Path {
       return refs;
     };
 
-    this.getMethods = (path, pathName) => {
+    this.getMethods = (path, pathName, structName) => {
       const authorizedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLIK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND'];
       const methods = [];
       _.forEach(path, (method, methodName) => {
         if (authorizedMethods.indexOf(methodName.toUpperCase()) === -1) return;
 
         const _method = {};
+        _method.pathName = pathName;
+        _method.structName = structName;
         _method.operationId = method.operationId || this.getOperationId(methodName, pathName);
         _method.methodName = methodName;
         _method.description =
@@ -88,26 +94,47 @@ class Path {
       });
       return methods;
     };
-  }
 
+    this.editPathName = (pathName) => {
+      /* eslint-disable prefer-const */
+      const splitPath = pathName.split('/');
+      let cleanPath = splitPath.map((pathPart) => {
+        if (pathPart.indexOf('-') !== -1 || pathPart.indexOf('_') !== -1) {
+          const _pathPart = camelCase(pathPart);
+          return `:${_pathPart}`;
+        }
+        return pathPart;
+      });
+      cleanPath.splice(1, 1);
+      if (cleanPath.length === 1) {
+        cleanPath[1] = '';
+      }
+      return cleanPath.join('/');
+    };
+    /* eslint-enable prefer-const */
+  }
 
   getPaths() {
     const paths = {};
     _.forEach(this.paths, (path, pathName) => {
       const _path = {};
-      const _pathName = pathName.replace('}', '').replace('{', ':');
-
+      const _pathName = this.editPathName(pathName.replace('}', '').replace('{', ':'));
       const endpointName = pathName.split('/')[1];
       _path.endpointName = endpointName;
+      _path.routerName = pluralize(endpointName, { revert: true });
+      _path.structName = pluralize(endpointName, { revert: true, camelcase: true });
+      _path.listName = pluralize(endpointName, { camelcase: true });
+      _path.controllerName = pluralize(endpointName, { revert: true });
+      _path.modelName = pluralize(endpointName, { revert: true, upperfirst: true });
       _path.pathName = _pathName;
-      _path.methods = this.getMethods(path, pathName);
-
+      _path.methods = this.getMethods(path, pathName, _path.structName);
       const tags = _.uniq(_.flatten(_.map(_path.methods, 'tags')));
       _.forEach(tags, (tag) => {
-        if (!paths[tag]) {
-          paths[tag] = [];
+        const _tag = toLower(tag);
+        if (!paths[_tag]) {
+          paths[_tag] = [];
         }
-        paths[tag].push(_path);
+        paths[_tag].push(_path);
       });
     });
 
